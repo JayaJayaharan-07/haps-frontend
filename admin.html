@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HAPS Admin Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root {
+  --blue:#0093d1;--aqua:#00c8d4;--dark:#001f40;--mid:#003d6b;
+  --bg:#f0f8ff;--white:#fff;--text:#0d2137;--light:#6b9ec5;
+  --shadow:0 4px 20px rgba(0,60,110,0.12);
+  --radius:14px;
+  --font-h:'Syne',sans-serif;--font-b:'Nunito',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--font-b);background:var(--bg);color:var(--text);min-height:100vh;}
+a{text-decoration:none;color:inherit;}
+button{cursor:pointer;border:none;outline:none;font-family:var(--font-b);}
+
+/* LOGIN SCREEN */
+#login-screen{
+  position:fixed;inset:0;background:linear-gradient(160deg,#001528,#002d50);
+  display:flex;align-items:center;justify-content:center;z-index:9999;
+}
+.login-box{
+  background:#fff;border-radius:24px;padding:44px 40px;width:100%;max-width:420px;
+  box-shadow:0 30px 80px rgba(0,40,90,0.35);
+}
+.login-logo{
+  display:flex;align-items:center;gap:10px;font-family:var(--font-h);
+  font-size:1.6rem;font-weight:800;color:var(--mid);margin-bottom:28px;
+}
+.login-logo-icon{
+  width:42px;height:42px;border-radius:50%;
+  background:linear-gradient(135deg,var(--aqua),var(--blue));
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:1.1rem;
+}
+.login-box h2{font-family:var(--font-h);font-size:1.4rem;font-weight:800;color:var(--mid);margin-bottom:6px;}
+.login-box p{font-size:0.88rem;color:var(--light);margin-bottom:28px;}
+.login-box input{
+  width:100%;padding:13px 16px;border:2px solid rgba(0,100,163,0.12);
+  border-radius:12px;font-family:var(--font-b);font-size:0.95rem;
+  outline:none;margin-bottom:14px;transition:all 0.3s;background:var(--bg);
+}
+.login-box input:focus{border-color:var(--aqua);box-shadow:0 0 0 4px rgba(0,200,212,0.1);background:#fff;}
+.btn-login{
+  width:100%;padding:14px;border-radius:50px;
+  background:linear-gradient(135deg,var(--blue),var(--aqua));
+  color:#fff;font-weight:700;font-size:1rem;
+  box-shadow:0 6px 18px rgba(0,147,209,0.35);transition:all 0.3s;
+}
+.btn-login:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(0,147,209,0.45);}
+.login-err{color:#e00;font-size:0.85rem;margin-top:10px;display:none;}
+
+/* LAYOUT */
+#admin-app{display:none;min-height:100vh;}
+.sidebar{
+  position:fixed;top:0;left:0;bottom:0;width:240px;
+  background:linear-gradient(180deg,var(--dark),var(--mid));
+  display:flex;flex-direction:column;z-index:100;
+  padding:0 0 20px;
+}
+.sidebar-logo{
+  display:flex;align-items:center;gap:10px;padding:24px 20px;
+  font-family:var(--font-h);font-size:1.4rem;font-weight:800;color:#fff;
+  border-bottom:1px solid rgba(255,255,255,0.08);margin-bottom:16px;
+}
+.sidebar-logo-icon{
+  width:36px;height:36px;border-radius:50%;
+  background:linear-gradient(135deg,var(--aqua),var(--blue));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:1rem;
+}
+.nav-item{
+  display:flex;align-items:center;gap:12px;padding:12px 20px;
+  color:rgba(255,255,255,0.6);font-weight:600;font-size:0.9rem;
+  cursor:pointer;transition:all 0.25s;border-radius:0;margin:0 10px;
+  border-radius:10px;
+}
+.nav-item:hover,.nav-item.active{
+  background:rgba(0,200,212,0.15);color:#fff;
+}
+.nav-item.active{border-left:3px solid var(--aqua);padding-left:17px;}
+.nav-item i{width:20px;text-align:center;font-size:0.95rem;}
+.sidebar-logout{
+  margin-top:auto;margin:auto 10px 0;padding:12px 20px;
+  display:flex;align-items:center;gap:12px;
+  color:rgba(255,255,255,0.5);font-size:0.88rem;font-weight:600;
+  cursor:pointer;border-radius:10px;transition:all 0.25s;
+}
+.sidebar-logout:hover{color:#fff;background:rgba(255,60,60,0.15);}
+
+.main-content{margin-left:240px;padding:32px;min-height:100vh;}
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:12px;}
+.page-title{font-family:var(--font-h);font-size:1.7rem;font-weight:800;color:var(--mid);}
+.page-sub{font-size:0.88rem;color:var(--light);margin-top:3px;}
+
+/* STATS CARDS */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:18px;margin-bottom:30px;}
+.stat-card{
+  background:#fff;border-radius:var(--radius);padding:22px;
+  box-shadow:var(--shadow);display:flex;align-items:center;gap:16px;
+}
+.stat-icon{
+  width:52px;height:52px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;font-size:1.3rem;color:#fff;flex-shrink:0;
+}
+.stat-num{font-family:var(--font-h);font-size:1.8rem;font-weight:800;color:var(--mid);line-height:1;}
+.stat-label{font-size:0.78rem;color:var(--light);margin-top:3px;text-transform:uppercase;letter-spacing:0.07em;}
+
+/* PANEL */
+.panel{background:#fff;border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);margin-bottom:22px;}
+.panel-header{
+  display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px;
+}
+.panel-title{font-family:var(--font-h);font-size:1.1rem;font-weight:800;color:var(--mid);}
+
+/* BUTTONS */
+.btn{
+  display:inline-flex;align-items:center;gap:7px;padding:10px 20px;
+  border-radius:50px;font-size:0.88rem;font-weight:700;transition:all 0.3s;cursor:pointer;border:none;
+}
+.btn-primary{background:linear-gradient(135deg,var(--blue),var(--aqua));color:#fff;box-shadow:0 4px 14px rgba(0,147,209,0.3);}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,147,209,0.4);}
+.btn-danger{background:#fee2e2;color:#dc2626;}
+.btn-danger:hover{background:#dc2626;color:#fff;}
+.btn-success{background:#dcfce7;color:#16a34a;}
+.btn-success:hover{background:#16a34a;color:#fff;}
+.btn-outline{background:transparent;border:2px solid rgba(0,100,163,0.15);color:var(--light);}
+.btn-outline:hover{border-color:var(--blue);color:var(--blue);}
+.btn-sm{padding:7px 14px;font-size:0.8rem;}
+
+/* TABLE */
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:0.88rem;}
+th{
+  background:var(--bg);color:var(--light);font-size:0.72rem;
+  text-transform:uppercase;letter-spacing:0.08em;
+  padding:10px 14px;text-align:left;font-weight:700;white-space:nowrap;
+}
+td{padding:13px 14px;border-bottom:1px solid rgba(0,100,163,0.07);vertical-align:middle;}
+tr:hover td{background:rgba(0,200,212,0.03);}
+
+/* STATUS BADGE */
+.status-badge{
+  display:inline-block;padding:4px 12px;border-radius:50px;
+  font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;
+}
+.s-pending{background:#fef3c7;color:#d97706;}
+.s-confirmed{background:#dbeafe;color:#1d4ed8;}
+.s-installed{background:#dcfce7;color:#16a34a;}
+.s-cancelled{background:#fee2e2;color:#dc2626;}
+
+/* SEARCH BAR */
+.search-bar{
+  display:flex;align-items:center;gap:10px;
+  background:var(--bg);border:2px solid rgba(0,100,163,0.1);
+  border-radius:50px;padding:8px 16px;
+}
+.search-bar input{background:transparent;border:none;outline:none;font-family:var(--font-b);font-size:0.9rem;width:220px;color:var(--text);}
+.search-bar i{color:var(--light);font-size:0.9rem;}
+
+/* FORM */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.form-group{display:flex;flex-direction:column;gap:5px;}
+.form-group.full{grid-column:1/-1;}
+.form-group label{font-size:0.82rem;font-weight:700;color:var(--mid);}
+.form-group input,.form-group select,.form-group textarea{
+  padding:11px 14px;border:2px solid rgba(0,100,163,0.1);border-radius:10px;
+  font-family:var(--font-b);font-size:0.9rem;outline:none;transition:all 0.3s;
+  background:var(--bg);
+}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{
+  border-color:var(--aqua);background:#fff;box-shadow:0 0 0 4px rgba(0,200,212,0.08);
+}
+.form-group textarea{resize:vertical;min-height:80px;}
+
+/* MODAL */
+.modal-backdrop{
+  position:fixed;inset:0;background:rgba(0,20,50,0.7);backdrop-filter:blur(8px);
+  z-index:2000;display:flex;align-items:center;justify-content:center;padding:20px;
+  opacity:0;pointer-events:none;transition:opacity 0.3s;
+}
+.modal-backdrop.open{opacity:1;pointer-events:all;}
+.modal-box{
+  background:#fff;border-radius:20px;max-width:620px;width:100%;max-height:90vh;
+  overflow-y:auto;box-shadow:0 30px 80px rgba(0,40,90,0.35);
+  transform:scale(0.92);transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+.modal-backdrop.open .modal-box{transform:scale(1);}
+.modal-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:22px 26px;border-bottom:1px solid rgba(0,100,163,0.08);
+}
+.modal-head h3{font-family:var(--font-h);font-size:1.2rem;font-weight:800;color:var(--mid);}
+.modal-head button{
+  width:32px;height:32px;border-radius:50%;background:var(--bg);
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.9rem;transition:all 0.25s;
+}
+.modal-head button:hover{background:#fee2e2;color:#c00;transform:rotate(90deg);}
+.modal-body-inner{padding:24px 26px;}
+
+/* PAGE TABS */
+.page{display:none;}
+.page.active{display:block;}
+
+/* LOADING */
+.loading{text-align:center;padding:40px;color:var(--light);font-size:0.9rem;}
+.loading i{font-size:2rem;display:block;margin-bottom:10px;animation:spin 1s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* TOAST */
+.admin-toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:var(--mid);color:#fff;padding:12px 24px;border-radius:50px;
+  font-weight:600;font-size:0.9rem;z-index:9999;opacity:0;transition:all 0.4s;
+  display:flex;align-items:center;gap:8px;white-space:nowrap;
+}
+.admin-toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.admin-toast i{color:var(--aqua);}
+
+/* EMPTY */
+.empty-state{text-align:center;padding:50px;color:var(--light);}
+.empty-state i{font-size:3rem;opacity:0.3;display:block;margin-bottom:12px;}
+
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%);transition:transform 0.3s;}
+  .sidebar.open{transform:translateX(0);}
+  .main-content{margin-left:0;padding:16px;}
+  .form-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- ── LOGIN ── -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="login-logo-icon"><i class="fas fa-tint"></i></div>
+      HAPS Admin
+    </div>
+    <h2>Welcome Back</h2>
+    <p>Sign in to manage products and orders.</p>
+    <input type="email"    id="login-email"    placeholder="Admin Email">
+    <input type="password" id="login-password" placeholder="Password">
+    <button class="btn-login" onclick="doLogin()">
+      <i class="fas fa-sign-in-alt"></i> Sign In
+    </button>
+    <p class="login-err" id="login-err"></p>
+  </div>
+</div>
+
+<!-- ── ADMIN APP ── -->
+<div id="admin-app">
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-icon"><i class="fas fa-tint"></i></div>
+      HAPS
+    </div>
+    <div class="nav-item active" onclick="showPage('dashboard')">
+      <i class="fas fa-chart-pie"></i> Dashboard
+    </div>
+    <div class="nav-item" onclick="showPage('orders')">
+      <i class="fas fa-clipboard-list"></i> Orders
+    </div>
+    <div class="nav-item" onclick="showPage('products')">
+      <i class="fas fa-filter"></i> Products
+    </div>
+    <div class="sidebar-logout" onclick="logout()">
+      <i class="fas fa-sign-out-alt"></i> Logout
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div class="main-content">
+
+    <!-- DASHBOARD PAGE -->
+    <div class="page active" id="page-dashboard">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Dashboard</div>
+          <div class="page-sub">Overview of HAPS operations</div>
+        </div>
+      </div>
+      <div class="stats-grid" id="stats-grid">
+        <div class="loading"><i class="fas fa-spinner"></i> Loading stats…</div>
+      </div>
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Recent Orders</div>
+          <button class="btn btn-outline btn-sm" onclick="showPage('orders')">View All</button>
+        </div>
+        <div class="table-wrap" id="recent-orders-table">
+          <div class="loading"><i class="fas fa-spinner"></i> Loading…</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ORDERS PAGE -->
+    <div class="page" id="page-orders">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Orders</div>
+          <div class="page-sub">Manage all customer bookings</div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+          <div class="search-bar">
+            <i class="fas fa-search"></i>
+            <input type="text" id="order-search" placeholder="Search orders…" oninput="loadOrders()">
+          </div>
+          <select id="order-status-filter" onchange="loadOrders()"
+            style="padding:9px 14px;border:2px solid rgba(0,100,163,0.1);border-radius:50px;
+                   font-family:inherit;font-size:0.88rem;background:var(--bg);outline:none;cursor:pointer;">
+            <option value="">All Status</option>
+            <option value="pending">Pending</option>
+            <option value="confirmed">Confirmed</option>
+            <option value="installed">Installed</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="table-wrap" id="orders-table">
+          <div class="loading"><i class="fas fa-spinner"></i> Loading orders…</div>
+        </div>
+        <div id="orders-pagination" style="display:flex;justify-content:flex-end;gap:8px;margin-top:16px;"></div>
+      </div>
+    </div>
+
+    <!-- PRODUCTS PAGE -->
+    <div class="page" id="page-products">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Products</div>
+          <div class="page-sub">Manage water purifier catalogue</div>
+        </div>
+        <button class="btn btn-primary" onclick="openProductModal()">
+          <i class="fas fa-plus"></i> Add Product
+        </button>
+      </div>
+      <div class="panel">
+        <div class="table-wrap" id="products-table">
+          <div class="loading"><i class="fas fa-spinner"></i> Loading products…</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end main-content -->
+</div><!-- end admin-app -->
+
+<!-- Product Modal -->
+<div class="modal-backdrop" id="product-modal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3 id="product-modal-title">Add Product</h3>
+      <button onclick="closeProductModal()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body-inner">
+      <div class="form-grid">
+        <div class="form-group"><label>Product Name *</label><input id="pf-name" placeholder="e.g. KENT Grand Plus"></div>
+        <div class="form-group"><label>Brand *</label><input id="pf-brand" placeholder="e.g. KENT"></div>
+        <div class="form-group">
+          <label>Type *</label>
+          <select id="pf-type">
+            <option value="ro">RO</option>
+            <option value="uv">UV</option>
+            <option value="uf">UF</option>
+            <option value="combo">Combo</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Type Label</label><input id="pf-type-label" placeholder="e.g. RO+UV+UF"></div>
+        <div class="form-group"><label>Price (₹) *</label><input id="pf-price" type="number" placeholder="14999"></div>
+        <div class="form-group"><label>MRP (₹)</label><input id="pf-orig-price" type="number" placeholder="18500"></div>
+        <div class="form-group full"><label>Warranty</label><input id="pf-warranty" placeholder="1 Year + 3 Year Free Service"></div>
+        <div class="form-group full"><label>Description *</label><textarea id="pf-desc" placeholder="Product description…"></textarea></div>
+        <div class="form-group full">
+          <label>Features (one per line)</label>
+          <textarea id="pf-features" placeholder="RO + UV + UF&#10;15 L/hr purification&#10;9L storage tank" style="min-height:100px;"></textarea>
+        </div>
+        <div class="form-group full">
+          <label>Tags (comma-separated)</label>
+          <input id="pf-tags" placeholder="Bestseller, Home Use">
+        </div>
+        <div class="form-group full"><label>Image URL</label><input id="pf-image" placeholder="https://…"></div>
+      </div>
+      <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:22px;">
+        <button class="btn btn-outline" onclick="closeProductModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveProduct()">
+          <i class="fas fa-save"></i> Save Product
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Order Status Modal -->
+<div class="modal-backdrop" id="order-modal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3>Update Order Status</h3>
+      <button onclick="closeOrderModal()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body-inner">
+      <div id="order-detail-view"></div>
+      <div class="form-group" style="margin-top:18px;">
+        <label>New Status</label>
+        <select id="order-new-status">
+          <option value="pending">Pending</option>
+          <option value="confirmed">Confirmed</option>
+          <option value="installed">Installed</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+      </div>
+      <div class="form-group" style="margin-top:12px;">
+        <label>Notes (optional)</label>
+        <textarea id="order-notes" placeholder="Add a note about this order…"></textarea>
+      </div>
+      <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px;">
+        <button class="btn btn-outline" onclick="closeOrderModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="updateOrderStatus()"><i class="fas fa-check"></i> Update Status</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="admin-toast" id="admin-toast"></div>
+
+<script>
+// ── CONFIG
+const API = 'https://haps-backend.vercel.app/api';
+// Local: 'http://localhost:4000/api'
+
+let currentOrderId  = null;
+let editingProductId = null;
+let ordersPage      = 1;
+
+// ── API HELPER
+async function api(path, options = {}) {
+  const token = localStorage.getItem('haps_admin_token');
+  const headers = { 'Content-Type': 'application/json' };
+  if (token) headers['Authorization'] = `Bearer ${token}`;
+  const res  = await fetch(`${API}${path}`, { ...options, headers });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || 'API error');
+  return data;
+}
+
+// ── TOAST
+function toast(msg, ok = true) {
+  const t = document.getElementById('admin-toast');
+  t.innerHTML = `<i class="fas fa-${ok ? 'check-circle' : 'exclamation-circle'}"></i> ${msg}`;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+// ── LOGIN
+async function doLogin() {
+  const email    = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-password').value.trim();
+  const err      = document.getElementById('login-err');
+
+  if (!email || !password) { err.textContent = 'Please enter email and password.'; err.style.display = 'block'; return; }
+
+  try {
+    const data = await api('/admin/login', { method:'POST', body: JSON.stringify({ email, password }) });
+    localStorage.setItem('haps_admin_token', data.token);
+    localStorage.setItem('haps_admin_name',  data.admin.name);
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin-app').style.display    = 'block';
+    initAdmin();
+  } catch (e) {
+    err.textContent  = e.message;
+    err.style.display = 'block';
+  }
+}
+document.getElementById('login-password').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+// ── LOGOUT
+function logout() {
+  localStorage.removeItem('haps_admin_token');
+  localStorage.removeItem('haps_admin_name');
+  document.getElementById('admin-app').style.display    = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+}
+
+// Check if already logged in
+if (localStorage.getItem('haps_admin_token')) {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('admin-app').style.display    = 'block';
+  initAdmin();
+}
+
+// ── INIT
+function initAdmin() {
+  loadDashboard();
+  loadOrders();
+  loadAdminProducts();
+}
+
+// ── PAGE NAVIGATION
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById(`page-${name}`).classList.add('active');
+  event.currentTarget.classList.add('active');
+  if (name === 'orders') { ordersPage = 1; loadOrders(); }
+}
+
+// ── DASHBOARD
+async function loadDashboard() {
+  try {
+    const data = await api('/bookings/stats/summary');
+    const s    = data.stats;
+    document.getElementById('stats-grid').innerHTML = `
+      <div class="stat-card">
+        <div class="stat-icon" style="background:linear-gradient(135deg,#0093d1,#00c8d4)"><i class="fas fa-clipboard-list"></i></div>
+        <div><div class="stat-num">${s.total_orders}</div><div class="stat-label">Total Orders</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:linear-gradient(135deg,#d97706,#f59e0b)"><i class="fas fa-clock"></i></div>
+        <div><div class="stat-num">${s.pending_orders}</div><div class="stat-label">Pending</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:linear-gradient(135deg,#16a34a,#22c55e)"><i class="fas fa-check-circle"></i></div>
+        <div><div class="stat-num">${s.installed_orders}</div><div class="stat-label">Installed</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:linear-gradient(135deg,#0052cc,#0073e6)"><i class="fas fa-calendar-day"></i></div>
+        <div><div class="stat-num">${s.orders_today}</div><div class="stat-label">Today</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:linear-gradient(135deg,#7b2ff7,#a855f7)"><i class="fas fa-rupee-sign"></i></div>
+        <div><div class="stat-num">₹${Number(s.total_revenue).toLocaleString('en-IN')}</div><div class="stat-label">Revenue</div></div>
+      </div>`;
+
+    // Recent orders
+    const rec = await api('/bookings?limit=5');
+    if (!rec.bookings.length) {
+      document.getElementById('recent-orders-table').innerHTML = `<div class="empty-state"><i class="fas fa-inbox"></i>No orders yet.</div>`;
+      return;
+    }
+    document.getElementById('recent-orders-table').innerHTML = buildOrderTable(rec.bookings, true);
+  } catch (e) {
+    toast(e.message, false);
+  }
+}
+
+// ── ORDERS
+async function loadOrders() {
+  const search = document.getElementById('order-search')?.value || '';
+  const status = document.getElementById('order-status-filter')?.value || '';
+  try {
+    let q = `/bookings?page=${ordersPage}&limit=15`;
+    if (search) q += `&search=${encodeURIComponent(search)}`;
+    if (status) q += `&status=${status}`;
+    const data = await api(q);
+
+    if (!data.bookings.length) {
+      document.getElementById('orders-table').innerHTML = `<div class="empty-state"><i class="fas fa-inbox"></i>No orders found.</div>`;
+      return;
+    }
+    document.getElementById('orders-table').innerHTML = buildOrderTable(data.bookings, false);
+
+    // Pagination
+    const pages = document.getElementById('orders-pagination');
+    pages.innerHTML = '';
+    for (let i = 1; i <= data.pages; i++) {
+      const btn = document.createElement('button');
+      btn.textContent = i;
+      btn.className   = `btn btn-sm ${i === ordersPage ? 'btn-primary' : 'btn-outline'}`;
+      btn.onclick     = () => { ordersPage = i; loadOrders(); };
+      pages.appendChild(btn);
+    }
+  } catch (e) {
+    toast(e.message, false);
+  }
+}
+
+function buildOrderTable(orders, mini) {
+  return `<table>
+    <thead><tr>
+      <th>Order ID</th><th>Customer</th><th>Product</th>
+      ${!mini ? '<th>Phone</th><th>Date</th>' : ''}
+      <th>Amount</th><th>Payment</th><th>Status</th><th>Actions</th>
+    </tr></thead>
+    <tbody>
+      ${orders.map(o => `
+        <tr>
+          <td style="font-weight:700;color:var(--blue);font-size:0.82rem;">${o.order_id}</td>
+          <td>${o.cust_name}<br><span style="font-size:0.78rem;color:var(--light);">${o.cust_city||''}</span></td>
+          <td>${o.product_name}<br><span style="font-size:0.78rem;color:var(--light);">${o.product_brand}</span></td>
+          ${!mini ? `<td>${o.cust_phone}</td><td style="font-size:0.82rem;">${o.preferred_date||'–'}</td>` : ''}
+          <td style="font-weight:700;">₹${Number(o.total_amount).toLocaleString('en-IN')}</td>
+          <td style="text-transform:capitalize;">${o.payment_method}</td>
+          <td><span class="status-badge s-${o.status}">${o.status}</span></td>
+          <td>
+            <button class="btn btn-sm btn-outline" onclick="openOrderModal(${o.id},'${o.status}')">
+              <i class="fas fa-edit"></i>
+            </button>
+          </td>
+        </tr>`).join('')}
+    </tbody>
+  </table>`;
+}
+
+// ── ORDER MODAL
+async function openOrderModal(id, currentStatus) {
+  currentOrderId = id;
+  try {
+    const data = await api(`/bookings/${id}`);
+    const o    = data.booking;
+    document.getElementById('order-detail-view').innerHTML = `
+      <div style="background:var(--bg);border-radius:12px;padding:16px;font-size:0.88rem;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          <div><b>Order:</b> ${o.order_id}</div>
+          <div><b>Customer:</b> ${o.cust_name}</div>
+          <div><b>Phone:</b> ${o.cust_phone}</div>
+          <div><b>Product:</b> ${o.product_name}</div>
+          <div><b>Amount:</b> ₹${Number(o.total_amount).toLocaleString('en-IN')}</div>
+          <div><b>Payment:</b> ${o.payment_method}</div>
+        </div>
+        ${o.cust_address ? `<div style="margin-top:8px;"><b>Address:</b> ${o.cust_address}</div>` : ''}
+      </div>`;
+    document.getElementById('order-new-status').value = currentStatus;
+    document.getElementById('order-notes').value      = '';
+    document.getElementById('order-modal').classList.add('open');
+  } catch (e) { toast(e.message, false); }
+}
+
+function closeOrderModal() {
+  document.getElementById('order-modal').classList.remove('open');
+  currentOrderId = null;
+}
+
+async function updateOrderStatus() {
+  try {
+    const status = document.getElementById('order-new-status').value;
+    const notes  = document.getElementById('order-notes').value;
+    await api(`/bookings/${currentOrderId}/status`, {
+      method: 'PATCH',
+      body: JSON.stringify({ status, notes })
+    });
+    toast('Order status updated!');
+    closeOrderModal();
+    loadOrders();
+    loadDashboard();
+  } catch (e) { toast(e.message, false); }
+}
+
+// ── PRODUCTS (admin)
+async function loadAdminProducts() {
+  try {
+    const data = await api('/products');
+    if (!data.products.length) {
+      document.getElementById('products-table').innerHTML = `<div class="empty-state"><i class="fas fa-filter"></i>No products yet.</div>`;
+      return;
+    }
+    document.getElementById('products-table').innerHTML = `
+      <table>
+        <thead><tr>
+          <th>Image</th><th>Name</th><th>Brand</th><th>Type</th>
+          <th>Price</th><th>Status</th><th>Actions</th>
+        </tr></thead>
+        <tbody>
+          ${data.products.map(p => `
+            <tr>
+              <td><img src="${p.image}" alt="${p.name}"
+                style="width:52px;height:52px;object-fit:contain;border-radius:8px;background:var(--bg);"
+                onerror="this.style.display='none'"></td>
+              <td><b>${p.name}</b></td>
+              <td>${p.brand}</td>
+              <td style="text-transform:uppercase;"><span class="status-badge" style="background:rgba(0,147,209,0.1);color:var(--blue);">${p.type}</span></td>
+              <td style="font-weight:700;">₹${Number(p.price).toLocaleString('en-IN')}</td>
+              <td><span class="status-badge ${p.is_active ? 's-installed' : 's-cancelled'}">${p.is_active ? 'Active' : 'Hidden'}</span></td>
+              <td style="display:flex;gap:8px;">
+                <button class="btn btn-sm btn-outline" onclick="openProductModal(${p.id})"><i class="fas fa-edit"></i></button>
+                <button class="btn btn-sm btn-danger"  onclick="deleteProduct(${p.id},'${p.name}')"><i class="fas fa-trash"></i></button>
+              </td>
+            </tr>`).join('')}
+        </tbody>
+      </table>`;
+  } catch (e) { toast(e.message, false); }
+}
+
+async function openProductModal(id = null) {
+  editingProductId = id;
+  document.getElementById('product-modal-title').textContent = id ? 'Edit Product' : 'Add Product';
+
+  // Clear form
+  ['pf-name','pf-brand','pf-type-label','pf-warranty','pf-desc','pf-features','pf-tags','pf-image']
+    .forEach(f => { document.getElementById(f).value = ''; });
+  document.getElementById('pf-price').value      = '';
+  document.getElementById('pf-orig-price').value = '';
+  document.getElementById('pf-type').value       = 'ro';
+
+  if (id) {
+    try {
+      const data     = await api(`/products/${id}`);
+      const p        = data.product;
+      const features = Array.isArray(p.features) ? p.features : JSON.parse(p.features || '[]');
+      const tags     = Array.isArray(p.tags)     ? p.tags     : JSON.parse(p.tags     || '[]');
+
+      document.getElementById('pf-name').value       = p.name;
+      document.getElementById('pf-brand').value      = p.brand;
+      document.getElementById('pf-type').value       = p.type;
+      document.getElementById('pf-type-label').value = p.type_label;
+      document.getElementById('pf-price').value      = p.price;
+      document.getElementById('pf-orig-price').value = p.orig_price;
+      document.getElementById('pf-warranty').value   = p.warranty;
+      document.getElementById('pf-desc').value       = p.description;
+      document.getElementById('pf-features').value   = features.join('\n');
+      document.getElementById('pf-tags').value       = tags.join(', ');
+      document.getElementById('pf-image').value      = p.image;
+    } catch (e) { toast(e.message, false); return; }
+  }
+
+  document.getElementById('product-modal').classList.add('open');
+}
+
+function closeProductModal() {
+  document.getElementById('product-modal').classList.remove('open');
+  editingProductId = null;
+}
+
+async function saveProduct() {
+  const name  = document.getElementById('pf-name').value.trim();
+  const brand = document.getElementById('pf-brand').value.trim();
+  const price = document.getElementById('pf-price').value;
+  const desc  = document.getElementById('pf-desc').value.trim();
+
+  if (!name || !brand || !price || !desc) {
+    toast('Please fill all required fields.', false); return;
+  }
+
+  const payload = {
+    name, brand,
+    type:        document.getElementById('pf-type').value,
+    type_label:  document.getElementById('pf-type-label').value.trim(),
+    price:       parseInt(price),
+    orig_price:  parseInt(document.getElementById('pf-orig-price').value) || parseInt(price),
+    warranty:    document.getElementById('pf-warranty').value.trim(),
+    description: desc,
+    features:    document.getElementById('pf-features').value.split('\n').map(f=>f.trim()).filter(Boolean),
+    tags:        document.getElementById('pf-tags').value.split(',').map(t=>t.trim()).filter(Boolean),
+    image:       document.getElementById('pf-image').value.trim()
+  };
+
+  try {
+    if (editingProductId) {
+      await api(`/products/${editingProductId}`, { method:'PUT',  body: JSON.stringify(payload) });
+      toast('Product updated!');
+    } else {
+      await api('/products',                     { method:'POST', body: JSON.stringify(payload) });
+      toast('Product added!');
+    }
+    closeProductModal();
+    loadAdminProducts();
+  } catch (e) { toast(e.message, false); }
+}
+
+async function deleteProduct(id, name) {
+  if (!confirm(`Deactivate "${name}"? It will be hidden from the website.`)) return;
+  try {
+    await api(`/products/${id}`, { method: 'DELETE' });
+    toast(`"${name}" deactivated.`);
+    loadAdminProducts();
+  } catch (e) { toast(e.message, false); }
+}
+
+// Close modals on backdrop click
+['product-modal','order-modal'].forEach(id => {
+  document.getElementById(id).addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('open');
+  });
+});
+</script>
+</body>
+</html>

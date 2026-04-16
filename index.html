@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HAPS – Health Aqua Pure Systems | Pure Water, Healthy Life</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============================================================
+  NAVBAR
+============================================================ -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#hero" class="nav-logo">
+      <div class="nav-logo-icon"><i class="fas fa-tint"></i></div>
+      HAPS
+    </a>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#systems">Systems</a>
+      <a href="#services">Services</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#contact">Contact</a>
+      <button class="nav-search-btn" onclick="toggleSearch()" title="Search"><i class="fas fa-search"></i></button>
+      <a href="#booking" class="nav-cta">Book Now</a>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <button class="nav-search-btn hamburger" onclick="toggleSearch()" style="display:none;" id="mobile-search"><i class="fas fa-search"></i></button>
+      <button class="hamburger" id="hamburger-btn" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#about" onclick="closeMenu()"><i class="fas fa-info-circle"></i>About</a>
+  <a href="#systems" onclick="closeMenu()"><i class="fas fa-filter"></i>Systems</a>
+  <a href="#services" onclick="closeMenu()"><i class="fas fa-tools"></i>Services</a>
+  <a href="#gallery" onclick="closeMenu()"><i class="fas fa-images"></i>Gallery</a>
+  <a href="#contact" onclick="closeMenu()"><i class="fas fa-phone"></i>Contact</a>
+  <a href="#booking" onclick="closeMenu()" style="background:linear-gradient(135deg,#0093d1,#00c8d4);color:#fff;margin-top:8px;border-radius:12px;"><i class="fas fa-calendar-check"></i>Book Now</a>
+</div>
+
+<!-- Search Overlay -->
+<div class="search-overlay" id="search-overlay">
+  <button class="search-close" onclick="toggleSearch()"><i class="fas fa-times"></i></button>
+  <div class="search-box">
+    <input type="text" id="search-input" placeholder="Search water purifiers, brands, types…" oninput="doSearch(this.value)">
+  </div>
+  <div id="search-results"></div>
+  <p id="search-empty">No matching systems found.</p>
+</div>
+
+<!-- ============================================================
+  HERO SECTION
+============================================================ -->
+<section id="hero">
+  <div class="hero-bg-canvas">
+    <!-- Bubbles -->
+    <div class="bubbles" id="bubbles-container"></div>
+    <!-- Waves -->
+    <svg class="wave-layer" viewBox="0 0 1200 100" preserveAspectRatio="none" style="height:90px;">
+      <path d="M0,50 C150,80 350,20 600,50 C850,80 1050,20 1200,50 L1200,100 L0,100 Z" fill="rgba(0,200,212,0.15)"/>
+    </svg>
+    <svg class="wave-layer wave-layer-2" viewBox="0 0 1200 100" preserveAspectRatio="none" style="height:80px;">
+      <path d="M0,40 C200,70 400,10 600,40 C800,70 1000,10 1200,40 L1200,100 L0,100 Z" fill="rgba(0,147,209,0.18)"/>
+    </svg>
+    <svg class="wave-layer wave-layer-3" viewBox="0 0 1200 100" preserveAspectRatio="none" style="height:70px;">
+      <path d="M0,60 C180,30 420,80 600,50 C780,20 980,70 1200,50 L1200,100 L0,100 Z" fill="rgba(0,61,107,0.4)"/>
+    </svg>
+  </div>
+
+  <!-- Floating purifier visual -->
+  <div class="hero-product-img">
+    <svg viewBox="0 0 300 480" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="purifierGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#e8f6fd"/>
+          <stop offset="100%" stop-color="#b8e0f7"/>
+        </linearGradient>
+        <linearGradient id="purifierAccent" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#0093d1"/>
+          <stop offset="100%" stop-color="#00c8d4"/>
+        </linearGradient>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="8" result="coloredBlur"/>
+          <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+      <!-- Base/shelf -->
+      <ellipse cx="150" cy="440" rx="90" ry="14" fill="rgba(0,200,212,0.2)"/>
+      <!-- Main body -->
+      <rect x="70" y="80" width="160" height="340" rx="28" fill="url(#purifierGrad)" stroke="rgba(0,147,209,0.3)" stroke-width="2"/>
+      <!-- Top cap -->
+      <ellipse cx="150" cy="80" rx="80" ry="20" fill="#c9e9f7"/>
+      <!-- Body panel -->
+      <rect x="88" y="120" width="124" height="220" rx="16" fill="rgba(255,255,255,0.7)" stroke="rgba(0,147,209,0.15)" stroke-width="1"/>
+      <!-- Brand name area -->
+      <rect x="96" y="130" width="108" height="36" rx="10" fill="url(#purifierAccent)"/>
+      <text x="150" y="153" text-anchor="middle" fill="white" font-size="14" font-family="sans-serif" font-weight="bold">HAPS</text>
+      <!-- Digital display -->
+      <rect x="96" y="176" width="108" height="54" rx="10" fill="#001f40"/>
+      <text x="150" y="197" text-anchor="middle" fill="#00c8d4" font-size="10" font-family="monospace">TDS: 012 ppm</text>
+      <text x="150" y="213" text-anchor="middle" fill="#00e5ff" font-size="10" font-family="monospace">pH: 7.2 ✓ PURE</text>
+      <text x="150" y="225" text-anchor="middle" fill="#7ee8f0" font-size="8" font-family="monospace">FILTER: 98%</text>
+      <!-- Status light -->
+      <circle cx="150" cy="244" r="6" fill="#00ff9d" filter="url(#glow)"/>
+      <!-- Buttons -->
+      <circle cx="124" cy="268" r="10" fill="rgba(0,147,209,0.2)" stroke="rgba(0,147,209,0.4)" stroke-width="1.5"/>
+      <circle cx="150" cy="268" r="10" fill="url(#purifierAccent)" stroke="none"/>
+      <circle cx="176" cy="268" r="10" fill="rgba(0,147,209,0.2)" stroke="rgba(0,147,209,0.4)" stroke-width="1.5"/>
+      <!-- Water outlet pipe -->
+      <rect x="118" y="300" width="64" height="18" rx="9" fill="rgba(0,147,209,0.3)"/>
+      <!-- Faucet -->
+      <rect x="134" y="318" width="32" height="12" rx="4" fill="#0093d1"/>
+      <ellipse cx="150" cy="334" rx="10" ry="6" fill="#0093d1"/>
+      <!-- Water drop animation area -->
+      <ellipse cx="150" cy="350" rx="5" ry="7" fill="rgba(0,200,212,0.7)" opacity="0.8">
+        <animate attributeName="cy" from="348" to="370" dur="1.2s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" from="0.8" to="0" dur="1.2s" repeatCount="indefinite"/>
+      </ellipse>
+      <!-- Bottom vents -->
+      <rect x="96" y="360" width="25" height="4" rx="2" fill="rgba(0,147,209,0.2)"/>
+      <rect x="130" y="360" width="25" height="4" rx="2" fill="rgba(0,147,209,0.2)"/>
+      <rect x="164" y="360" width="40" height="4" rx="2" fill="rgba(0,147,209,0.2)"/>
+      <!-- Side pipe -->
+      <rect x="230" y="140" width="16" height="80" rx="8" fill="rgba(0,147,209,0.3)"/>
+      <circle cx="238" cy="140" r="10" fill="rgba(0,147,209,0.3)"/>
+      <!-- Glow effect -->
+      <ellipse cx="150" cy="250" rx="60" ry="70" fill="rgba(0,200,212,0.04)" filter="url(#glow)"/>
+    </svg>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <i class="fas fa-tint"></i>
+      Water Purification Experts
+    </div>
+    <h1 class="hero-title">
+      Health Aqua<br><span>Pure Systems</span>
+    </h1>
+    <p class="hero-tagline">
+      <strong>Pure Water, Healthy Life</strong> — RO, UV & UF Systems for<br>homes, offices & industries across Tamil Nadu.
+    </p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num">1k+</div>
+        <div class="hero-stat-label">Installations</div>
+      </div>
+      <div class="hero-stat" style="border-left:1px solid rgba(255,255,255,0.15);padding-left:30px;">
+        <div class="hero-stat-num">15+</div>
+        <div class="hero-stat-label">Years Exp.</div>
+      </div>
+      <div class="hero-stat" style="border-left:1px solid rgba(255,255,255,0.15);padding-left:30px;">
+        <div class="hero-stat-num">20+</div>
+        <div class="hero-stat-label">Brands</div>
+      </div>
+    </div>
+    <div class="hero-ctas">
+      <a href="#systems" class="btn btn-primary"><i class="fas fa-water"></i> Explore Systems</a>
+      <a href="#booking" class="btn btn-outline"><i class="fas fa-calendar-check"></i> Book Now</a>
+    </div>
+  </div>
+
+  <div class="hero-scroll" onclick="document.getElementById('brands').scrollIntoView({behavior:'smooth'})">
+    SCROLL DOWN <i class="fas fa-chevron-down"></i>
+  </div>
+</section>
+
+<!-- ============================================================
+  BRANDS STRIP
+============================================================ -->
+<section id="brands">
+  <div class="brands-track" id="brands-track">
+    <span class="brand-item">KENT</span><div class="brand-sep"></div>
+    <span class="brand-item">AQUAGUARD</span><div class="brand-sep"></div>
+    <span class="brand-item">PUREIT</span><div class="brand-sep"></div>
+    <span class="brand-item">LIVPURE</span><div class="brand-sep"></div>
+    <span class="brand-item">AO SMITH</span><div class="brand-sep"></div>
+    <span class="brand-item">ZERO B</span><div class="brand-sep"></div>
+    <span class="brand-item">HAVELLS</span><div class="brand-sep"></div>
+    <span class="brand-item">WHIRLPOOL</span><div class="brand-sep"></div>
+    <span class="brand-item">TATA SWACH</span><div class="brand-sep"></div>
+    <span class="brand-item">EUREKA FORBES</span><div class="brand-sep"></div>
+    <!-- Duplicate for seamless loop -->
+    <span class="brand-item">KENT</span><div class="brand-sep"></div>
+    <span class="brand-item">AQUAGUARD</span><div class="brand-sep"></div>
+    <span class="brand-item">PUREIT</span><div class="brand-sep"></div>
+    <span class="brand-item">LIVPURE</span><div class="brand-sep"></div>
+    <span class="brand-item">AO SMITH</span><div class="brand-sep"></div>
+    <span class="brand-item">ZERO B</span><div class="brand-sep"></div>
+    <span class="brand-item">HAVELLS</span><div class="brand-sep"></div>
+    <span class="brand-item">WHIRLPOOL</span><div class="brand-sep"></div>
+    <span class="brand-item">TATA SWACH</span><div class="brand-sep"></div>
+    <span class="brand-item">EUREKA FORBES</span><div class="brand-sep"></div>
+  </div>
+</section>
+
+<!-- ============================================================
+  ABOUT SECTION
+============================================================ -->
+<section id="about" class="section">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-visual reveal-left">
+        <div class="about-main-img">
+          <svg viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+            <defs>
+              <linearGradient id="aboutBg" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#003d6b"/>
+                <stop offset="100%" stop-color="#0093d1"/>
+              </linearGradient>
+            </defs>
+            <rect width="400" height="500" fill="url(#aboutBg)"/>
+            <!-- Water purifier lab illustration -->
+            <rect x="60" y="80" width="280" height="360" rx="20" fill="rgba(255,255,255,0.08)"/>
+            <!-- Multiple purifier units -->
+            <rect x="80" y="110" width="70" height="160" rx="12" fill="rgba(255,255,255,0.12)" stroke="rgba(0,200,212,0.4)" stroke-width="1.5"/>
+            <rect x="95" y="125" width="40" height="50" rx="6" fill="#001f40"/>
+            <text x="115" y="148" text-anchor="middle" fill="#00c8d4" font-size="7" font-family="monospace">RO UNIT</text>
+            <text x="115" y="160" text-anchor="middle" fill="#7ee8f0" font-size="6" font-family="monospace">●●●●●</text>
+            <rect x="95" y="185" width="40" height="8" rx="4" fill="rgba(0,200,212,0.4)"/>
+            <rect x="95" y="200" width="40" height="8" rx="4" fill="rgba(0,200,212,0.3)"/>
+            <rect x="95" y="215" width="40" height="8" rx="4" fill="rgba(0,200,212,0.2)"/>
+            <rect x="118" y="270" width="14" height="30" rx="7" fill="#0093d1"/>
+
+            <rect x="165" y="110" width="70" height="160" rx="12" fill="rgba(255,255,255,0.12)" stroke="rgba(0,200,212,0.4)" stroke-width="1.5"/>
+            <rect x="180" y="125" width="40" height="50" rx="6" fill="#001f40"/>
+            <text x="200" y="148" text-anchor="middle" fill="#00c8d4" font-size="7" font-family="monospace">UV UNIT</text>
+            <text x="200" y="160" text-anchor="middle" fill="#7ee8f0" font-size="6" font-family="monospace">●●●●●</text>
+            <circle cx="200" cy="197" r="14" fill="rgba(255,220,0,0.1)" stroke="rgba(255,220,0,0.4)" stroke-width="1.5"/>
+            <circle cx="200" cy="197" r="7" fill="rgba(255,220,0,0.5)"/>
+            <rect x="203" y="270" width="14" height="30" rx="7" fill="#0093d1"/>
+
+            <rect x="250" y="110" width="70" height="160" rx="12" fill="rgba(255,255,255,0.12)" stroke="rgba(0,200,212,0.4)" stroke-width="1.5"/>
+            <rect x="265" y="125" width="40" height="50" rx="6" fill="#001f40"/>
+            <text x="285" y="148" text-anchor="middle" fill="#00c8d4" font-size="7" font-family="monospace">UF UNIT</text>
+            <text x="285" y="160" text-anchor="middle" fill="#7ee8f0" font-size="6" font-family="monospace">●●●●●</text>
+            <rect x="265" y="185" width="40" height="60" rx="6" fill="rgba(0,200,212,0.06)" stroke="rgba(0,200,212,0.2)" stroke-width="1"/>
+            <rect x="288" y="270" width="14" height="30" rx="7" fill="#0093d1"/>
+
+            <!-- Connecting pipe -->
+            <rect x="80" y="300" width="240" height="8" rx="4" fill="rgba(0,200,212,0.3)"/>
+            <!-- Water drops falling -->
+            <circle cx="125" cy="350" r="4" fill="rgba(0,200,212,0.6)">
+              <animate attributeName="cy" from="345" to="390" dur="1.5s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" from="0.8" to="0" dur="1.5s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="207" cy="355" r="4" fill="rgba(0,200,212,0.6)">
+              <animate attributeName="cy" from="345" to="390" dur="1.8s" begin="0.3s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" from="0.8" to="0" dur="1.8s" begin="0.3s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="292" cy="352" r="4" fill="rgba(0,200,212,0.6)">
+              <animate attributeName="cy" from="345" to="390" dur="1.3s" begin="0.6s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" from="0.8" to="0" dur="1.3s" begin="0.6s" repeatCount="indefinite"/>
+            </circle>
+            <!-- Collection tank -->
+            <rect x="120" y="390" width="160" height="60" rx="14" fill="rgba(0,147,209,0.25)" stroke="rgba(0,200,212,0.5)" stroke-width="1.5"/>
+            <text x="200" y="425" text-anchor="middle" fill="#7ee8f0" font-size="10" font-family="sans-serif" font-weight="bold">PURE WATER</text>
+          </svg>
+        </div>
+        <div class="about-badge-card reveal" data-delay="2">
+          <div class="about-badge-icon"><i class="fas fa-award"></i></div>
+          <div class="about-badge-text">
+            <div class="num">15+</div>
+            <div class="label">Years of Excellence</div>
+          </div>
+        </div>
+        <div class="about-small-card reveal" data-delay="3">
+          <div class="sc-num">5K+</div>
+          <div class="sc-label">Happy Customers</div>
+        </div>
+      </div>
+
+      <div class="about-text reveal-right">
+        <span class="badge">About HAPS</span>
+        <h2 class="section-title">We Make Pure Water<br>Our Mission</h2>
+        <p class="about-desc">Health Aqua Pure Systems (HAPS) is a leading water purification solutions company based in Tamil Nadu. We specialize in selling, installing, and servicing a wide range of water filter systems including RO, UV, and UF technologies from India's top brands.</p>
+        <p class="about-desc">Our certified technicians ensure every installation meets the highest standards, and our post-sales AMC services keep your system running optimally year-round.</p>
+
+        <div class="about-features">
+          <div class="about-feat" data-delay="1">
+            <div class="about-feat-icon"><i class="fas fa-certificate"></i></div>
+            <div class="about-feat-text">
+              <strong>ISI Certified</strong>
+              <span>All products BIS certified</span>
+            </div>
+          </div>
+          <div class="about-feat" data-delay="2">
+            <div class="about-feat-icon"><i class="fas fa-tools"></i></div>
+            <div class="about-feat-text">
+              <strong>Expert Technicians</strong>
+              <span>Trained service engineers</span>
+            </div>
+          </div>
+          <div class="about-feat" data-delay="3">
+            <div class="about-feat-icon"><i class="fas fa-shipping-fast"></i></div>
+            <div class="about-feat-text">
+              <strong>Fast Delivery</strong>
+              <span>Same-day installation</span>
+            </div>
+          </div>
+          <div class="about-feat" data-delay="4">
+            <div class="about-feat-icon"><i class="fas fa-headset"></i></div>
+            <div class="about-feat-text">
+              <strong>24/7 Support</strong>
+              <span>Always here for you</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mv-cards">
+          <div class="mv-card">
+            <h4><i class="fas fa-eye" style="margin-right:6px;"></i>Mission</h4>
+            <p>To provide every household and business with access to clean, safe, and pure drinking water through trusted technology and exceptional service.</p>
+          </div>
+          <div class="mv-card">
+            <h4><i class="fas fa-rocket" style="margin-right:6px;"></i>Vision</h4>
+            <p>To become Tamil Nadu's most trusted water purification partner, touching lives with healthier water every single day.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+  SYSTEMS / PRODUCTS
+============================================================ -->
+<section id="systems" class="section">
+  <div class="container">
+    <div class="systems-header reveal">
+      <div>
+        <span class="badge">Our Systems</span>
+        <h2 class="section-title">Water Purification Systems</h2>
+        <p class="section-sub">Choose from our wide range of RO, UV, and UF purifiers from India's top brands.</p>
+      </div>
+      <div class="filter-tabs" id="filter-tabs">
+        <button class="filter-tab active" onclick="filterProducts('all', this)">All</button>
+        <button class="filter-tab" onclick="filterProducts('ro', this)">RO</button>
+        <button class="filter-tab" onclick="filterProducts('uv', this)">UV</button>
+        <button class="filter-tab" onclick="filterProducts('uf', this)">UF</button>
+        <button class="filter-tab" onclick="filterProducts('combo', this)">Combo</button>
+      </div>
+    </div>
+    <div class="products-grid" id="products-grid">
+      <!-- Products rendered by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- Product Detail Modal -->
+<div class="modal-overlay" id="product-modal">
+  <div class="modal" id="modal-content">
+    <div class="modal-close"><button onclick="closeModal()"><i class="fas fa-times"></i></button></div>
+    <div class="modal-body">
+      <div class="modal-grid">
+        <div class="modal-img-area">
+          <div class="modal-main-img" id="modal-main-img"></div>
+          <div class="modal-thumbs" id="modal-thumbs"></div>
+        </div>
+        <div class="modal-info">
+          <div class="modal-tag-row" id="modal-tags"></div>
+          <h2 class="modal-title" id="modal-title"></h2>
+          <p class="modal-brand" id="modal-brand"></p>
+          <p class="modal-desc" id="modal-desc"></p>
+          <div class="modal-features-list">
+            <h4>Key Features</h4>
+            <div id="modal-features"></div>
+          </div>
+          <div class="modal-pricing">
+            <div>
+              <div class="modal-price-label">Price</div>
+              <div class="modal-price-val" id="modal-price"></div>
+              <div class="modal-price-orig" id="modal-orig-price"></div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:0.78rem;color:var(--text-light);">Warranty</div>
+              <div style="font-weight:700;color:var(--blue-deep);" id="modal-warranty"></div>
+            </div>
+          </div>
+          <div class="modal-actions">
+            <button class="btn btn-primary" onclick="bookThisProduct()" style="flex:1;justify-content:center;"><i class="fas fa-calendar-check"></i> Book Now</button>
+            <button class="btn btn-aqua" onclick="addToWhatsApp()" style="padding:14px 20px;"><i class="fab fa-whatsapp"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+  SERVICES SECTION
+============================================================ -->
+<section id="services" class="section">
+  <div class="container">
+    <div class="reveal" style="text-align:center;max-width:600px;margin:0 auto 0;">
+      <span class="badge">What We Do</span>
+      <h2 class="section-title" style="color:#fff;">Complete Water Solutions</h2>
+      <p class="section-sub">From installation to annual maintenance — we're your trusted water partner.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal" data-delay="1">
+        <div class="service-icon"><i class="fas fa-wrench"></i></div>
+        <div class="service-title">Installation</div>
+        <p class="service-desc">Professional installation of all water purifier types by certified technicians at your doorstep.</p>
+        <ul class="service-list">
+          <li><i class="fas fa-check-circle"></i> Same-day installation</li>
+          <li><i class="fas fa-check-circle"></i> Wall-mount & countertop</li>
+          <li><i class="fas fa-check-circle"></i> Quality pipes & fittings</li>
+          <li><i class="fas fa-check-circle"></i> Post-installation testing</li>
+        </ul>
+      </div>
+      <div class="service-card reveal" data-delay="2">
+        <div class="service-icon"><i class="fas fa-cog"></i></div>
+        <div class="service-title">Repair & Maintenance</div>
+        <p class="service-desc">Fast, reliable repair service for all makes and models of water purifiers, any brand.</p>
+        <ul class="service-list">
+          <li><i class="fas fa-check-circle"></i> 24-hour response time</li>
+          <li><i class="fas fa-check-circle"></i> Genuine spare parts</li>
+          <li><i class="fas fa-check-circle"></i> Filter replacement</li>
+          <li><i class="fas fa-check-circle"></i> Leak-fix & motor repair</li>
+        </ul>
+      </div>
+      <div class="service-card reveal" data-delay="3">
+        <div class="service-icon"><i class="fas fa-shield-alt"></i></div>
+        <div class="service-title">AMC — Annual Contract</div>
+        <p class="service-desc">Comprehensive Annual Maintenance Contract to keep your purifier performing at its best all year.</p>
+        <ul class="service-list">
+          <li><i class="fas fa-check-circle"></i> 2–4 service visits/year</li>
+          <li><i class="fas fa-check-circle"></i> Free filter replacements</li>
+          <li><i class="fas fa-check-circle"></i> Priority support</li>
+          <li><i class="fas fa-check-circle"></i> Water quality testing</li>
+        </ul>
+      </div>
+      <div class="service-card reveal" data-delay="4">
+        <div class="service-icon"><i class="fas fa-flask"></i></div>
+        <div class="service-title">Water Quality Testing</div>
+        <p class="service-desc">Free on-site TDS, pH, and purity testing to help you choose the right purification system.</p>
+        <ul class="service-list">
+          <li><i class="fas fa-check-circle"></i> TDS level analysis</li>
+          <li><i class="fas fa-check-circle"></i> pH & hardness test</li>
+          <li><i class="fas fa-check-circle"></i> Bacteria detection</li>
+          <li><i class="fas fa-check-circle"></i> Free expert consultation</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+  GALLERY SECTION
+============================================================ -->
+<section id="gallery" class="section">
+  <div class="container">
+    <div class="reveal" style="text-align:center;max-width:600px;margin:0 auto 40px;">
+      <span class="badge">Gallery</span>
+      <h2 class="section-title">Our Work in Action</h2>
+      <p class="section-sub">Real installations, happy customers, and pristine water purification systems.</p>
+    </div>
+    <div class="gallery-grid reveal">
+      <div class="gallery-item">
+        <div class="gallery-item-inner" style="background:linear-gradient(135deg,#003d6b,#006fa8);">
+          <div class="gallery-img-placeholder">
+             <span> <img src="images/work1.webp" alt="" style="width: 500px; height:300px;"></span>
+          </div>
+        </div>
+        <div class="gallery-item-overlay"><span>Residential RO Installation</span></div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-item-inner" style="background:linear-gradient(135deg,#00718a,#00a3c4);">
+          <div class="gallery-img-placeholder" style="font-size:2rem;">
+            <span> <img src="images/work2.webp" alt="" style="width: 500px; height:300px;"> </span>
+          </div>
+        </div>
+        <div class="gallery-item-overlay"><span>Commercial UV Installation</span></div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-item-inner" style="background:linear-gradient(135deg,#003060,#0055a0);">
+          <div class="gallery-img-placeholder" style="font-size:2rem;">
+            <span> <img src="images/work33.webp" alt="" style="width: 500px; height:300px;"> </span>
+          </div>
+        </div>
+        <div class="gallery-item-overlay"><span>Industrial UF System</span></div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-item-inner" style="background:linear-gradient(135deg,#006070,#00aab4);">
+          <div class="gallery-img-placeholder" style="font-size:2rem;">
+            <span> <img src="images/work4.jpg" alt="" style="width: 500px; height:300px;"> </span>
+          </div>
+        </div>
+        <div class="gallery-item-overlay"><span>AMC Service Visit</span></div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-item-inner" style="background:linear-gradient(135deg,#00406b,#0080b0);">
+          <div class="gallery-img-placeholder" style="font-size:2rem;">
+            <span> <img src="images/work5.jpg" alt="" style="width: 500px; height:300px;"> </span>
+          </div>
+        </div>
+        <div class="gallery-item-overlay"><span>School Water Station</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+  BOOKING FLOW
+============================================================ -->
+<section id="booking" class="section">
+  <div class="container">
+    <div class="booking-header reveal">
+      <span class="badge">Book a System</span>
+      <h2 class="section-title">Easy 5-Step Booking</h2>
+      <p class="section-sub">Select your system, enter details, and confirm — we'll handle the rest.</p>
+    </div>
+    <div class="booking-container reveal" data-delay="2">
+      <!-- Steps bar -->
+      <div class="steps-bar">
+        <div class="steps-track">
+          <div class="steps-progress" id="steps-progress" style="width:0%"></div>
+          <div class="step-dot active" data-step="1" id="dot-1">1<span class="step-dot-label">Select</span></div>
+          <div class="step-dot" data-step="2" id="dot-2">2<span class="step-dot-label">Details</span></div>
+          <div class="step-dot" data-step="3" id="dot-3">3<span class="step-dot-label">Info</span></div>
+          <div class="step-dot" data-step="4" id="dot-4">4<span class="step-dot-label">Payment</span></div>
+          <div class="step-dot" data-step="5" id="dot-5"><i class="fas fa-check" style="font-size:0.8rem;"></i><span class="step-dot-label">Done!</span></div>
+        </div>
+      </div>
+
+      <!-- Step 1: Select Product -->
+      <div class="booking-step active" id="step-1">
+        <h3 class="step-title">Choose Your System</h3>
+        <p class="step-subtitle">Select the water purifier you'd like to book.</p>
+        <div class="booking-products-grid" id="booking-products-grid"></div>
+      </div>
+
+      <!-- Step 2: Product Details -->
+      <div class="booking-step" id="step-2">
+        <h3 class="step-title">Product Details</h3>
+        <p class="step-subtitle">Review the product you've selected.</p>
+        <div class="step2-product" id="step2-product-preview"></div>
+      </div>
+
+      <!-- Step 3: Customer Details -->
+      <div class="booking-step" id="step-3">
+        <h3 class="step-title">Your Information</h3>
+        <p class="step-subtitle">Enter your contact and delivery details.</p>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Full Name *</label>
+            <input type="text" id="cust-name" placeholder="Your full name">
+          </div>
+          <div class="form-group">
+            <label>Phone Number *</label>
+            <input type="tel" id="cust-phone" placeholder="+91 XXXXX XXXXX">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="cust-email" placeholder="your@email.com">
+          </div>
+          <div class="form-group">
+            <label>City / Town *</label>
+            <input type="text" id="cust-city" placeholder="Your city">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group full">
+            <label>Full Address *</label>
+            <textarea id="cust-address" placeholder="Door no., Street, Area, District…"></textarea>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Preferred Date</label>
+            <input type="date" id="cust-date">
+          </div>
+          <div class="form-group">
+            <label>Time Slot</label>
+            <select id="cust-time">
+              <option>9:00 AM – 12:00 PM</option>
+              <option>12:00 PM – 3:00 PM</option>
+              <option>3:00 PM – 6:00 PM</option>
+              <option>Flexible (Any time)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4: Payment -->
+      <div class="booking-step" id="step-4">
+        <h3 class="step-title">Payment Method</h3>
+        <p class="step-subtitle">Choose how you'd like to pay. (Demo only — no real transaction)</p>
+        <div class="order-summary" id="order-summary-4"></div>
+        <div class="payment-methods" id="payment-methods">
+          <label class="pay-method" onclick="selectPayment(this, 'upi')">
+            <input type="radio" name="payment">
+            <div class="pay-icon" style="background:linear-gradient(135deg,#7b2ff7,#a855f7);"><i class="fas fa-mobile-alt"></i></div>
+            <div class="pay-info">
+              <strong>UPI Payment</strong>
+              <span>Google Pay, PhonePe, Paytm, BHIM</span>
+            </div>
+            <div class="pay-check"><i class="fas fa-check"></i></div>
+          </label>
+          <label class="pay-method" onclick="selectPayment(this, 'card')">
+            <input type="radio" name="payment">
+            <div class="pay-icon" style="background:linear-gradient(135deg,#0052cc,#0073e6);"><i class="fas fa-credit-card"></i></div>
+            <div class="pay-info">
+              <strong>Credit / Debit Card</strong>
+              <span>Visa, Mastercard, RuPay</span>
+            </div>
+            <div class="pay-check"><i class="fas fa-check"></i></div>
+          </label>
+          <label class="pay-method" onclick="selectPayment(this, 'netbanking')">
+            <input type="radio" name="payment">
+            <div class="pay-icon" style="background:linear-gradient(135deg,#00897b,#26c6da);"><i class="fas fa-university"></i></div>
+            <div class="pay-info">
+              <strong>Net Banking</strong>
+              <span>All major Indian banks supported</span>
+            </div>
+            <div class="pay-check"><i class="fas fa-check"></i></div>
+          </label>
+          <label class="pay-method" onclick="selectPayment(this, 'cod')">
+            <input type="radio" name="payment">
+            <div class="pay-icon" style="background:linear-gradient(135deg,#e65c00,#f9a825);"><i class="fas fa-money-bill-wave"></i></div>
+            <div class="pay-info">
+              <strong>Cash on Delivery</strong>
+              <span>Pay at the time of installation</span>
+            </div>
+            <div class="pay-check"><i class="fas fa-check"></i></div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Step 5: Confirmation -->
+      <div class="booking-step" id="step-5">
+        <div class="confirmation-screen" id="confirmation-content"></div>
+      </div>
+
+      <!-- Navigation -->
+      <div class="booking-nav" id="booking-nav">
+        <button class="btn-booking-back" id="back-btn" onclick="bookingPrev()" style="visibility:hidden;"><i class="fas fa-arrow-left"></i> Back</button>
+        <button class="btn-booking-next" id="next-btn" onclick="bookingNext()">Continue <i class="fas fa-arrow-right"></i></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+  CONTACT SECTION
+============================================================ -->
+<section id="contact" class="section">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="reveal-left">
+        <span class="badge">Get in Touch</span>
+        <h2 class="section-title">We're Just a Call Away</h2>
+        <p class="section-sub">Have questions? Need a free water test? Reach out to our friendly team.</p>
+        <div class="contact-info-cards">
+          <div class="contact-card">
+            <div class="contact-card-icon"><i class="fas fa-phone-alt"></i></div>
+            <div class="contact-card-text">
+              <strong>Phone</strong>
+              <span>+91 98765 43210</span>
+              <span>+91 98765 43211</span>
+            </div>
+          </div>
+          <div class="contact-card">
+            <div class="contact-card-icon"><i class="fas fa-envelope"></i></div>
+            <div class="contact-card-text">
+              <strong>Email</strong>
+              <span>info@healthaquapure.in</span>
+              <span>support@healthaquapure.in</span>
+            </div>
+          </div>
+          <div class="contact-card">
+            <div class="contact-card-icon"><i class="fas fa-map-marker-alt"></i></div>
+            <div class="contact-card-text">
+              <strong>Location</strong>
+              <span>No. 42, Anna Salai, Karur – 639001</span>
+              <span>Tamil Nadu, India</span>
+            </div>
+          </div>
+          <div class="contact-card">
+            <div class="contact-card-icon"><i class="fas fa-clock"></i></div>
+            <div class="contact-card-text">
+              <strong>Working Hours</strong>
+              <span>Mon – Sat: 8:00 AM – 7:00 PM</span>
+              <span>Sunday: 9:00 AM – 2:00 PM</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="contact-form-card reveal-right">
+        <h3>Send a Message</h3>
+        <p>Our team responds within 2 hours during working hours.</p>
+        <div class="contact-form">
+          <input type="text" placeholder="Your Full Name">
+          <input type="tel" placeholder="Phone Number">
+          <input type="email" placeholder="Email Address">
+          <input type="text" placeholder="Your Area / City">
+          <textarea placeholder="Your message or query…"></textarea>
+          <button class="btn btn-primary" onclick="sendContactForm()"><i class="fas fa-paper-plane"></i> Send Message</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+  FOOTER
+============================================================ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#hero" class="nav-logo">
+          <div class="nav-logo-icon"><i class="fas fa-tint"></i></div>
+          HAPS
+        </a>
+        <p>Health Aqua Pure Systems — Tamil Nadu's trusted water purification partner. Delivering clean, safe, and pure drinking water to homes and businesses since 2009.</p>
+        <div class="footer-social">
+          <a href="#" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="social-btn"><i class="fab fa-youtube"></i></a>
+          <a href="#" class="social-btn"><i class="fab fa-whatsapp"></i></a>
+          <a href="#" class="social-btn"><i class="fab fa-twitter"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#about"><i class="fas fa-angle-right"></i>About Us</a></li>
+          <li><a href="#systems"><i class="fas fa-angle-right"></i>Our Systems</a></li>
+          <li><a href="#services"><i class="fas fa-angle-right"></i>Services</a></li>
+          <li><a href="#gallery"><i class="fas fa-angle-right"></i>Gallery</a></li>
+          <li><a href="#contact"><i class="fas fa-angle-right"></i>Contact</a></li>
+          <li><a href="#booking"><i class="fas fa-angle-right"></i>Book Now</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Our Systems</h4>
+        <ul>
+          <li><a href="#systems"><i class="fas fa-angle-right"></i>RO Purifiers</a></li>
+          <li><a href="#systems"><i class="fas fa-angle-right"></i>UV Purifiers</a></li>
+          <li><a href="#systems"><i class="fas fa-angle-right"></i>UF Purifiers</a></li>
+          <li><a href="#systems"><i class="fas fa-angle-right"></i>RO+UV Combo</a></li>
+          <li><a href="#systems"><i class="fas fa-angle-right"></i>Commercial RO</a></li>
+          <li><a href="#services"><i class="fas fa-angle-right"></i>AMC Plans</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="tel:+919876543210"><i class="fas fa-phone"></i>+91 98765 43210</a></li>
+          <li><a href="mailto:info@healthaquapure.in"><i class="fas fa-envelope"></i>info@healthaquapure.in</a></li>
+          <li><a href="#"><i class="fas fa-map-marker-alt"></i>Karur, Tamil Nadu</a></li>
+          <li><a href="#"><i class="fab fa-whatsapp"></i>WhatsApp Us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Health Aqua Pure Systems (HAPS). All rights reserved.</p>
+      <p>Made with <span class="heart">♥</span> in Tamil Nadu, India</p>
+    </div>
+  </div>
+</footer>
+
+<!-- WhatsApp Floating -->
+<div class="whatsapp-float">
+  <div class="wa-tooltip">Chat on WhatsApp</div>
+  <a href="https://wa.me/919876543210?text=Hi HAPS! I need help with water purifier." target="_blank" class="wa-btn" title="Chat on WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+</div>
+
+<!-- Back to Top -->
+<button class="back-top" id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">
+  <i class="fas fa-chevron-up"></i>
+</button>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- ============================================================
+  JAVASCRIPT
+============================================================ -->
+<script src="script.js"></script>
+
+</body>
+</html>
